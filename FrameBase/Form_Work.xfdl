@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_Work" width="600" height="540" titletext="Form_Work">
+    <Layouts>
+      <Layout width="600" height="540" screenid="Desktop_screen">
+        <Div id="Div00" taborder="0" text="Div00" left="25" top="25" width="570" height="550" url="Base::xpushRealTimeChat.xfdl"/>
+      </Layout>
+      <Layout name="Phone_screen" width="480" height="768" screenid=""/>
+    </Layouts>
+  </Form>
+</FDL>

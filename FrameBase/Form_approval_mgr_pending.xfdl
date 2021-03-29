@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_approval_mgr_pending" width="1280" height="670" titletext="APPROVAL">
+    <Layouts>
+      <Layout height="670" mobileorientation="landscape" width="1280">
+        <Div id="div_approval_mgr_pending" taborder="0" left="0%" top="0%" width="100%" height="100%">
+          <Layouts>
+            <Layout>
+              <Static id="lb_approval_mgr_pending" taborder="0" text="미결함 조회" left="0%" top="0%" width="100%" height="5.22%" background="#333F50" font="bold 12pt/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="#ffffff" padding="0px 0px 0px 10px"/>
+              <Static id="lb_approval_mgr_pending_search" taborder="1" left="2.03%" top="7.31%" width="96.09%" height="11.94%" background="#D6DCE5" color="black"/>
+              <Static id="lb_write_date" taborder="3" text="작성일" left="5.63%" top="11.04%" width="6.25%" height="4.48%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+              <Calendar id="cal_start_date" taborder="4" left="11.48%" top="10.75%" width="15.63%" height="5.22%" type="normal"/>
+              <Static id="lb_date_center" taborder="7" text="~" left="27.89%" top="11.04%" width="1.72%" height="3.58%" font="normal 700 14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="center" verticalAlign="middle"/>
+              <Calendar id="cal_end_date" taborder="5" left="30.39%" top="10.75%" width="15.63%" height="5.22%" type="normal"/>
+              <Button id="btn_approval_mgr_pending_search" taborder="2" text="검색" left="80.23%" top="10.75%" width="7.66%" height="4.93%" background="#333F50" border="0px none transparent" color="#ffffff" font="bold 14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" onclick="div_approval_mgr_pending_btn_approval_mgr_pending_search_onclick"/>
+              <Grid id="grid_approvalList" taborder="6" left="2.03%" top="20.15%" width="96.09%" height="71.64%" binddataset="ds_approvalList" onheadclick="div_approval_mgr_pending_grid_approvalList_onheadclick" autofittype="col" oncelldblclick="div_approval_mgr_pending_grid_approvalList_oncelldblclick">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="80"/>
+                      <Column size="160"/>
+                      <Column size="250"/>
+                      <Column size="120"/>
+                      <Column size="497"/>
+                      <Column size="120"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell displaytype="checkboxcontrol" edittype="checkbox"/>
+                      <Cell col="1" text="문서번호"/>
+                      <Cell col="2" text="신청일"/>
+                      <Cell col="3" text="작성자"/>
+                      <Cell col="4" text="제목"/>
+                      <Cell col="5" text="결재상태"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:APPROVAL_CK" displaytype="checkboxcontrol" edittype="checkbox"/>
+                      <Cell col="1" text="bind:APPROVAL_NO"/>
+                      <Cell col="2" text="bind:APPROVAL_DATE"/>
+                      <Cell col="3" text="bind:EMP_NAME"/>
+                      <Cell col="4" text="bind:APPROVAL_TITLE"/>
+                      <Cell col="5" text="bind:APPROVAL_STATE"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_approval_mgr_pending_search00" taborder="1" text="전체조회" left="89.22%" top="10.75%" width="7.66%" height="4.93%" background="#333F50" border="0px none transparent" color="#ffffff" font="bold 14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" onclick="div_approval_mgr_pending_btn_approval_mgr_pending_search00_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_approvalList">
+        <ColumnInfo>
+          <Column id="APPROVAL_CK" type="STRING" size="256"/>
+          <Column id="APPROVAL_CODE" type="STRING" size="256"/>
+          <Column id="APPROVAL_NO" type="STRING" size="256"/>
+          <Column id="APPROVAL_DATE" type="STRING" size="256"/>
+          <Column id="EMP_NAME" type="STRING" size="256"/>
+          <Column id="APPROVAL_TITLE" type="STRING" size="256"/>
+          <Column id="APPROVAL_STATE" type="STRING" size="256"/>
+          <Column id="EMP_NO" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows/>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/* 체크박스 설정 시작 */
+this.div_approval_mgr_pending_grid_approvalList_onheadclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	//alert("onheadclick 클릭 이벤트 성공");
+	//체크박스로 설정한 첫 번째 head 컬럼을 클릭했을 경우에 gf_setCheckAll 함수를 호출
+    if(e.cell == 0)
+    {
+        this.gf_setCheckAll(obj, e);
+    }
+};
+
+this.gv_isCheckAll = 0;
+this.gf_setCheckAll = function(obj:Grid, e:GridClickEventInfo)
+{
+    var strColID = obj.getCellProperty("body", e.cell, "text").replace(/bind:/i, "");
+        
+    //체크박스가 체크되어 있으면 체크 해제 
+    //체크되어 있지 않으면 체크
+    this.gv_isCheckAll = (this.gv_isCheckAll ? 0 : 1);
+    
+    //Dataset의 이벤트를 끔
+    //this.Dataset00.enableevent = false;
+    
+    //check to body column
+    for(var i=0; i< this.ds_approvalList.getRowCount(); i++)
+    {
+        this.ds_approvalList.setColumn(i, strColID, this.gv_isCheckAll);
+    }
+    //check to head column
+    obj.setCellProperty("Head", 0, "text", this.gv_isCheckAll);
+
+    //Dataset의 이벤트를 켬
+    //this.Dataset00.enableevent = true;
+};
+/* 체크박스 설정   끝 */
+
+//상세조회
+this.div_approval_mgr_pending_grid_approvalList_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	this.objApp_var = nexacro.getApplication();
+	this.objApp_var.gb_approvalCode; //전역 결재코드(기본키)
+	//현재 선택한 로우의 결재코드값 읽어서, 전역 결재코드에 담음.
+	this.objApp_var.gb_approvalCode = this.ds_approvalList.getColumn(e.row, "APPROVAL_CODE");
+	
+	//objDs : gb_login(전역 로그인객체)
+	//전역 결재자명(gb_mgrName). 전역 로그인객체 gb_login의 "EMP_NAME"컬럼에서 가져온다.
+	this.objApp_var.gb_mgrName = objDs.getColumn(0, "EMP_NAME"); 
+	
+	var objChildFrame = new ChildFrame();//ChildFrame생성
+	objChildFrame.init("popup_approval_mgr_draft"
+					, 500//x좌표
+					, 100//y좌표
+					, 772//가로
+					, 650//높이
+					, null
+					, null
+					, "FrameBase::Form_approval_mgr_draft.xfdl");	
+	/*param1 : id, param2 : 값 */				  
+	this.addChild("childframeNew", objChildFrame);//ChildFrame추가하기
+	this.childframeNew.set_border("1px solid #999999");//모달창 border설정
+	this.childframeNew.set_dragmovetype("normal");//모달창 움직임 여부 설정		
+	objChildFrame.show();
+};
+
+var objApp = nexacro.getApplication();
+var objDs = objApp.gb_login; //전역 로그인객체
+
+this.div_approval_mgr_pending_btn_approval_mgr_pending_search_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//검색
+	var period_from = this.div_approval_mgr_pending.form.cal_start_date.value;
+	var period_to = this.div_approval_mgr_pending.form.cal_end_date.value;
+	var p_mgrName = objDs.getColumn(0, "EMP_NAME"); //전역 로그인객체의 사원이름을 결재자 변수에 담음.
+	this.transaction("approvalSelect" ,"SvcURL::approval/approvalSelect.psp" 
+		,"in_approvalList=ds_approvalList" ,"ds_approvalList=out_approvalList" 
+		,"p_mgrName="+p_mgrName+" state=미결재 period_from="+period_from
+		+" period_to="+period_to
+		,"fn_callback");
+};
+
+this.div_approval_mgr_pending_btn_approval_mgr_pending_search00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//전체조회
+	var p_mgrName = objDs.getColumn(0, "EMP_NAME"); //전역 로그인객체의 사원이름을 결재자 변수에 담음.
+	this.transaction("approvalSelect" ,"SvcURL::approval/approvalSelect.psp" 
+		,"in_approvalList=ds_approvalList" ,"ds_approvalList=out_approvalList" 
+		,"p_mgrName="+p_mgrName+" state=미결재"
+		,"fn_callback");
+};
+
+// 비동기 통신 결과를 받을 콜백 함수 지정 
+this.fn_callback = function(svcID, errCD, errMSG) { 
+	//alert("fn_callback호출 성공"+svcID+","+errCD+","+errMSG);
+	if(errCD < 0){ 
+		this.alert(errMSG); 
+		return; 
+	}
+	if(svcID == "approvalSelect"){
+		//this.alert(errMSG);
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_approval_mgr_draftD" width="770" height="630" titletext="APPROVAL" onload="Form_approval_mgr_draftD_onload">
+    <Layouts>
+      <Layout height="630" mobileorientation="landscape" width="770">
+        <Static id="lb_approval_mgr_draftD" taborder="0" text="기안서-기결" left="0%" top="0%" width="100%" height="6.35%" background="#333F50" color="#ffffff" font="bold 12pt/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" padding="0px 0px 0px 10px" visible="true"/>
+        <Static id="lb_approval_mgr_draftD_center" taborder="1" left="1.30%" top="20.63%" width="97.27%" height="70.48%" background="#EDEFF3" border="0px none transparent" text=""/>
+        <Static id="lb_approval_doc_no" taborder="2" text="문서번호" left="4.03%" top="23.49%" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_approval_doc_no" taborder="3" left="17.53%" top="23.17%" width="23.38%" height="5.56%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Static id="lb_approval_date" taborder="4" text="기안일" left="58.44%" top="148" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Calendar id="cal_start_date" taborder="5" left="72.21%" top="23.17%" width="23.38%" height="5.56%" type="normal" dateformat="yyyy-MM-dd"/>
+        <Static id="lb_approval_dept" taborder="6" text="기안부서" left="4.03%" top="31.27%" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_approval_dept" taborder="7" left="17.53%" top="30.95%" width="23.38%" height="5.56%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Static id="lb_approval_writer" taborder="8" text="기안자" left="58.44%" top="197" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_approval_writer" taborder="9" left="72.21%" top="30.95%" width="23.38%" height="5.56%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Static id="lb_approval_title" taborder="10" text="제목" left="4.03%" top="38.73%" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_approval_title" taborder="11" left="17.53%" top="38.41%" width="78.31%" height="5.56%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <TextArea id="text_approval_write" taborder="12" left="4.03%" top="45.56%" width="91.56%" height="34.13%" scrollbartype="auto auto"/>
+        <Static id="lb_approval_comment" taborder="13" text="결재의견" left="4.03%" top="81.27%" width="10.39%" height="4.29%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <TextArea id="text_approval_comment" taborder="14" left="12.73%" top="81.27%" width="82.86%" height="7.78%" scrollbartype="auto auto"/>
+        <Static id="lb_approval_preserve" taborder="15" text="보존기한" left="1.3%" top="93.17%" width="10.39%" height="4.76%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Combo id="cb_approval_preserve" taborder="16" left="15.06%" top="92.86%" width="23.38%" height="5.56%" innerdataset="ds_preserveList" codecolumn="year" datacolumn="year" onitemchanged="cb_approval_preserve_onitemchanged"/>
+        <Grid id="grid_approverList" taborder="17" left="60.39%" top="7.94%" width="38.05%" height="12.70%" binddataset="ds_approverList" oncellclick="grid_approverList_oncellclick" autofittype="col" scrollbartype="none none">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="26"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="1차 결재자" textAlign="center" verticalAlign="middle"/>
+                <Cell col="1" text="2차 결재자" textAlign="center" verticalAlign="middle"/>
+                <Cell col="2" text="최종 결재자" textAlign="center" verticalAlign="middle"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:APPROVAL_1ST" verticalAlign="middle" textAlign="center"/>
+                <Cell col="1" text="bind:APPROVAL_2ND" verticalAlign="middle" textAlign="center"/>
+                <Cell col="2" text="bind:APPROVAL_3RD" verticalAlign="middle" textAlign="center"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_preserveList">
+        <ColumnInfo>
+          <Column id="num" type="STRING" size="256"/>
+          <Column id="year" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="num">0</Col>
+            <Col id="year">1년</Col>
+          </Row>
+          <Row>
+            <Col id="num">1</Col>
+            <Col id="year">2년</Col>
+          </Row>
+          <Row>
+            <Col id="num">2</Col>
+            <Col id="year">3년</Col>
+          </Row>
+          <Row>
+            <Col id="num">3</Col>
+            <Col id="year">4년</Col>
+          </Row>
+          <Row>
+            <Col id="num">4</Col>
+            <Col id="year">5년</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_approverList">
+        <ColumnInfo>
+          <Column id="APPROVAL_1ST" type="STRING" size="256"/>
+          <Column id="APPROVAL_2ND" type="STRING" size="256"/>
+          <Column id="APPROVAL_3RD" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/* 결재자 선택 그리드 */
+this.grid_approverList_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	/* 사원이 기안서 작성할 때 선택한 결재자 불러오면 될 것 같아요 */
+	if (e.row == 0 && e.cell==0) {//approver0
+		alert(e.cell.valueOf());
+		
+	}
+	else if (e.row == 0  && e.cell==1){//approver1
+		alert(e.cell.valueOf());
+					
+	}
+	else if (e.row == 0  && e.cell==2){//approver2
+		alert(e.cell.valueOf());
+	}	
+};
+
+this.popdiv_approver_search_btn_approver_search_close_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.popdiv_approver_search.closePopup("Close");		
+};
+
+var objApp = nexacro.getApplication();
+var objDs = objApp.gb_approval;
+var gb_login = objApp.gb_login;
+
+this.Form_approval_mgr_draftD_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	var p_apprcode = objDs.getColumn(0,"APPROVAL_CODE");
+	//alert("APPROVAL_CODE(자식창) : " + p_apprcode);
+	this.transaction("approvalSelect" ,"SvcURL::approval/approvalSelect.psp" 
+		,"in_approvalList=gb_approval" ,"gb_approval=out_approvalList" 
+		,"p_apprcode="+p_apprcode,"fn_callback");
+};
+
+// 비동기 통신 결과를 받을 콜백 함수 지정 
+this.fn_callback = function(svcID, errCD, errMSG) { 
+	//alert("fn_callback호출 성공"+svcID+","+errCD+","+errMSG);
+	if(errCD < 0){ 
+		this.alert(errMSG); 
+		return; 
+	}
+	if(svcID == "approvalSelect"){
+		//this.alert(errMSG); 
+		this.edit_approval_doc_no.set_value(objDs.getColumn(0,"APPROVAL_NO"));
+		this.cal_start_date.set_value(objDs.getColumn(0,"APPROVAL_DATE"));
+		this.ds_approverList.setColumn(0,0,objDs.getColumn(0,"APPROVAL_1ST"));
+		this.ds_approverList.setColumn(0,1,objDs.getColumn(0,"APPROVAL_2ND"));
+		this.ds_approverList.setColumn(0,2,objDs.getColumn(0,"APPROVAL_3RD"));
+		this.edit_approval_title.set_value(objDs.getColumn(0,"APPROVAL_TITLE"));
+		this.text_approval_write.set_value(objDs.getColumn(0,"APPROVAL_CONTENT"));
+		this.cb_approval_preserve.set_value(objDs.getColumn(0,"APPROVAL_PERIOD"));
+		this.edit_approval_dept.set_value(gb_login.getColumn(0,"DEPT_NAME"));
+		this.edit_approval_writer.set_value(gb_login.getColumn(0,"EMP_NAME"));
+		this.ds_approverList.setColumn(1,0,objDs.getColumn(0,"APPROVAL_1RS"));
+		this.ds_approverList.setColumn(1,1,objDs.getColumn(0,"APPROVAL_2RS"));
+		this.ds_approverList.setColumn(1,2,objDs.getColumn(0,"APPROVAL_3RS"));
+		this.text_approval_comment.set_value(objDs.getColumn(0,"APPROVAL_NOTE"))
+	}
+}]]></Script>
+  </Form>
+</FDL>

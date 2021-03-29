@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_crops_update" width="650" height="250" titletext="CROPS" onload="Form_crops_update_onload">
+    <Layouts>
+      <Layout height="250" mobileorientation="landscape" width="650">
+        <Static id="lb_crops_create" taborder="0" text="농산물 등록" left="0%" top="0%" width="100%" height="16%" background="#333F50" color="#ffffff" font="bold 12pt/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" padding="0px 0px 0px 10px" visible="true"/>
+        <Static id="lb_crops_create_center" taborder="1" left="1.54%" top="20%" width="96.92%" height="76%" background="#EDEFF3" border="0px none transparent" text=""/>
+        <Static id="lb_crops_no" taborder="2" text="농산물 코드" left="5.23%" top="30.8%" width="11.54%" height="12%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_crops_no" taborder="3" left="18.77%" top="30%" width="27.69%" height="14%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Button id="btn_crops_no_check" taborder="4" text="중복확인" left="48.46%" top="30%" width="9.23%" height="13.6%" background="#333F50" border="0px none transparent" color="#ffffff" font="bold 12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" visible="true" onclick="btn_crops_no_check_onclick"/>
+        <Static id="lb_crops_m" taborder="5" text="분류" left="5.23%" top="53.2%" width="11.54%" height="12%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_crops_sort" taborder="6" left="18.77%" top="52%" width="27.69%" height="14%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Static id="lb_crops_s" taborder="7" text="농산물명" left="53.85%" top="53.2%" width="9.23%" height="12%" textAlign="left" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" color="black" visible="true"/>
+        <Edit id="edit_crops_name" taborder="8" left="64.62%" top="52%" width="27.69%" height="14%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Button id="btn_crops_update" taborder="9" text="수정" left="81.54%" top="78.40%" width="15.23%" height="13.60%" background="#333F50" border="0px none transparent" color="#ffffff" font="bold 14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" visible="true" onclick="btn_crops_update_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_unitList">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="unit" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">0</Col>
+            <Col id="unit">g</Col>
+          </Row>
+          <Row>
+            <Col id="unit">kg</Col>
+            <Col id="code">1</Col>
+          </Row>
+          <Row>
+            <Col id="unit">box</Col>
+            <Col id="code">2</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[
+this.btn_crops_no_check_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//alert("농산물코드 중복검사");
+	var p_cropsUNo = this.edit_crops_no.value; 
+	if(p_cropsUNo == undefined || p_cropsUNo == "") {
+		alert("농산물코드를 입력하시오");
+		return;
+	}
+	this.transaction("cropsUCheck" ,"SvcURL::stock/cropsUCheck.psp","" ,"" ,"p_cropsUNo="+p_cropsUNo+" p_beforeCropsNo="+p_beforeCropsNo ,"fn_callback");
+};
+
+var check = 0;
+
+this.fn_callback = function(svcID, errCD, errMSG) { 
+	//alert("fn_callback호출 성공"+svcID+","+errCD+","+errMSG);
+	if(errCD < 0){ 
+		this.alert(errMSG);
+		check = 0;
+		return;
+	}
+	if(svcID == "cropsUCheck"){
+		this.alert(errMSG);
+		check = 1;
+	}
+	if(svcID == "cropsUSelect"){
+		this.edit_crops_no.set_value(objDs.getColumn(0, "CROPS_NO"));
+		p_beforeCropsNo = objDs.getColumn(0, "CROPS_NO");
+		this.edit_crops_sort.set_value(objDs.getColumn(0, "CROPS_SORT"));
+		this.edit_crops_name.set_value(objDs.getColumn(0, "CROPS_NAME"));
+	}
+	if(svcID == "cropsUpdate"){
+		this.alert(errMSG);
+		check = 0;
+	}
+}
+
+var p_beforeCropsNo = null;
+var objApp = nexacro.getApplication();
+var objDs = objApp.gb_cropsList;
+
+this.Form_crops_update_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	//폼이 로드됐을 때 발생하는 이벤트
+	this.objApp_var = nexacro.getApplication();
+	this.objApp_var.gb_cropsUNo;
+	this.transaction("cropsUSelect" ,"SvcURL::stock/cropsUSelect.psp","in_cropsList=gb_cropsList" ,"gb_cropsList=out_cropsList" ,"p_cropsUNo="+this.objApp_var.gb_cropsUNo,"fn_callback");
+};
+
+this.btn_crops_update_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this.edit_crops_no.value == undefined || this.edit_crops_no.value =="") {
+		alert("농산물코드를 입력하시오");
+		return;
+	}
+	if(this.edit_crops_sort == undefined || this.edit_crops_sort == "") {
+		alert("분류를 입력하시오");
+		return;
+	}
+	if(this.edit_crops_name == undefined || this.edit_crops_name == "") {
+		alert("농산물명 입력하시오");
+		return;
+	}
+	if(check == 0) {
+		alert("중복검사를 하시오.");
+		return;
+	}
+	this.transaction("cropsUpdate" ,"SvcURL::stock/cropsUpdate.psp","" ,"" 
+		,"p_beforeCropsNo="+p_beforeCropsNo
+		+" p_cropsNo="+this.edit_crops_no.value
+		+" p_cropsSort="+this.edit_crops_sort.value
+		+" p_cropsName="+this.edit_crops_name.value,"fn_callback");
+};
+]]></Script>
+  </Form>
+</FDL>

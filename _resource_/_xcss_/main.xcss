@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XCSS version="1.0"><![CDATA[.Edit.main_chart
+{
+	-nexa-border 			: 0px none;
+	-nexa-edge			: ;
+	-nexa-padding 			: 0px 5px 1px 5px;
+	-nexa-text-align		: ;
+	-nexa-text-decoration 		: underline;	
+	background 			: transparent;	
+	border-radius			: ;
+	box-shadow			: ;
+	color				: ;
+	cursor				: pointer;
+	font				: ;
+	letter-spacing			: ;
+	opacity				: ;
+	word-spacing			: ;
+	
+}
+.Edit.main_chart[status=disabled]
+{
+}
+.Edit.main_chart[status=mouseover]
+{
+	-nexa-border 			: 0px none;
+	-nexa-text-decoration 		: underline;	
+}
+.Edit.main_chart[status=focused]
+{
+	-nexa-border 			: 0px none;
+	-nexa-text-decoration 		: underline;	
+}
+.Edit.main_chart[status=readonly]
+{
+}
+.EditControl.main_chart
+{
+	background : transparent;
+	-nexa-border : 0px none;
+	-nexa-padding : 1px 9px 0px 9px;
+}
+]]></XCSS>

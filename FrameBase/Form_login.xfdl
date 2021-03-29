@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="Form_login" width="1500" height="800" titletext="LOGIN" onload="Form_login_onload">
+    <Layouts>
+      <Layout height="800" mobileorientation="landscape" width="1500">
+        <ImageViewer id="img_logo_center" taborder="0" left="35.63%" top="2.99%" width="28.75%" height="54.48%" image="url('imagerc::logo1.png')" background="transparent" border="0px none transparent"/>
+        <Button id="btn_login" taborder="1" text="로그인" left="60.16%" top="69.55%" width="7.81%" height="5.07%" background="#333F50" border="0px none transparent" color="#ffffff" font="bold 14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" onclick="div_emp_btn_emp_add_onclick" visible="true"/>
+        <Edit id="ed_empno" taborder="2" left="42.97%" top="60.45%" width="14.06%" height="5.22%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+        <Static id="lb_login_id" taborder="3" text="사원번호" left="36.33%" top="60.75%" width="7.81%" height="4.48%" color="black" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" onchanged="Common_onchanged" visible="true"/>
+        <Static id="lb_login_pw" taborder="4" text="비밀번호" left="36.33%" top="69.85%" width="7.81%" height="4.48%" color="black" font="14px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" onchanged="Common_onchanged" visible="true"/>
+        <Edit id="ed_emppw" taborder="5" left="42.97%" top="69.55%" width="14.06%" height="5.22%" font="12px/normal &quot;Malgun Gothic&quot;,&quot;Arial&quot;" textAlign="left" visible="true"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_mem">
+        <ColumnInfo>
+          <Column id="EMP_NO" type="STRING" size="256"/>
+          <Column id="EMP_PW" type="STRING" size="256"/>
+          <Column id="EMP_NAME" type="STRING" size="256"/>
+          <Column id="DEPT_NAME" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[
+this.div_emp_btn_emp_add_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objApp = nexacro.getApplication();
+	var objDs = objApp.gd_login;
+
+	var p_empno = this.ed_empno.value;
+	var p_emppw = this.ed_emppw.value;
+	
+	this.transaction("login" ,"SvcURL::member/login.psp?p_empno="+p_empno+"&p_emppw="+p_emppw, "" , "gb_login=out_login" ,"" ,"fn_callback");
+};
+
+// 비동기 통신 결과를 받을 콜백 함수 지정 
+this.fn_callback = function(svcID, errCD, errMSG) { 
+	//errCD가 서버에서 nErrorCode  = 0, errMSG가 strErrorMsg = "login SUCC";
+	//alert("fn_callback호출 성공"+svcID+","+errCD+","+errMSG);
+	if(errCD == -1){ 
+		this.alert(errMSG); 
+		return; 
+	}
+	if(errCD == -2){ 
+		this.alert(errMSG); 
+		return; 
+	}
+	if(svcID == "login"){
+		this.alert(errMSG + "님 환영합니다.");
+		this.go("FrameBase::Form_main.xfdl");
+	}
+}
+// 서버로 부터 전달된 데이터가 없을 경우 
+// (서버에서 HttpPlatformResponse 자체를 실행하지 않음)에는
+// ErrorCode 는 -1 값으로, ErrorMsg 는 "Stream Data is null!" 값으로 설정된 후,
+// 콜백 함수가 호출
+
+this.Form_login_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.ed_empno.set_value("210101");
+	this.ed_emppw.set_value("kosmo");
+};
+]]></Script>
+  </Form>
+</FDL>
